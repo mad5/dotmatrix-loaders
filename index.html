@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dotmatix — canvas dot-matrix loaders</title>
+    <style>
+      :root {
+        --paper: #f6f1e7;
+        --ink: #1d1a16;
+        --soft: #6f675b;
+        --line: #d9d0bf;
+        --card: #fffaf0;
+        --pop: #d94f30;
+        color-scheme: light;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #15130f;
+          --ink: #efe7d6;
+          --soft: #a29883;
+          --line: #332e26;
+          --card: #1d1a15;
+          --pop: #ff7a52;
+          color-scheme: dark;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 15px/1.55 Georgia, "Times New Roman", serif;
+      }
+
+      header,
+      main,
+      footer {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        padding-top: 56px;
+        padding-bottom: 28px;
+        border-bottom: 2px solid var(--ink);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 6vw, 64px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .tagline {
+        margin: 10px 0 0;
+        color: var(--soft);
+        font-style: italic;
+      }
+
+      .install {
+        margin: 32px 0;
+        padding: 14px 18px;
+        border: 1px dashed var(--line);
+        font: 13px/1.6 ui-monospace, Menlo, Consolas, monospace;
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .try-bar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        margin: 0 -24px 20px;
+        padding: 10px 24px 14px;
+        background: var(--paper);
+        box-shadow: 0 1px 0 var(--line);
+      }
+
+      @media (max-width: 720px) {
+        .try-bar {
+          max-height: 42vh;
+          overflow: auto;
+        }
+      }
+
+      fieldset {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px 22px;
+        margin: 0;
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        background: var(--card);
+      }
+
+      legend {
+        padding: 0 6px;
+        font-variant: small-caps;
+        letter-spacing: 0.05em;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+      }
+
+      select,
+      input {
+        font: inherit;
+      }
+
+      input[type="range"] {
+        width: 110px;
+        accent-color: var(--pop);
+      }
+
+      .list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 18px;
+        margin-bottom: 56px;
+      }
+
+      .group {
+        grid-column: 1 / -1;
+        margin: 36px 0 0;
+        font-size: 28px;
+        letter-spacing: -0.02em;
+      }
+
+      .item {
+        display: grid;
+        grid-template-rows: 120px auto;
+        border: 1px solid var(--line);
+        background: var(--card);
+      }
+
+      .stage {
+        display: grid;
+        place-items: center;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .info {
+        padding: 12px 14px 14px;
+      }
+
+      .info h2 {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin: 0 0 4px;
+        font-size: 18px;
+      }
+
+      .info h2 small {
+        color: var(--soft);
+        font: 12px ui-monospace, Menlo, Consolas, monospace;
+      }
+
+      .info p {
+        margin: 0 0 10px;
+        color: var(--soft);
+        font-size: 13.5px;
+      }
+
+      .copy {
+        padding: 4px 10px;
+        border: 1px solid var(--ink);
+        background: none;
+        color: inherit;
+        font: 12px ui-monospace, Menlo, Consolas, monospace;
+        cursor: pointer;
+      }
+
+      .copy:hover {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      footer {
+        padding-bottom: 40px;
+        color: var(--soft);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Dotmatix</h1>
+        <p class="tagline">Little canvas loaders made of dots. One file, no dependencies.</p>
+      </div>
+      <dotmatix-loader name="life" size="56" glow="0.6" style="color: var(--pop)"></dotmatix-loader>
+    </header>
+
+    <main>
+      <pre class="install">&lt;script src="dotmatix.js"&gt;&lt;/script&gt;
+&lt;dotmatix-loader name="orbit" size="40"&gt;&lt;/dotmatix-loader&gt;</pre>
+
+      <div class="try-bar">
+        <fieldset id="controls">
+          <legend>Try it</legend>
+          <label>Color <input type="color" id="color" value="#d94f30" /></label>
+          <label><input type="checkbox" id="use-accent" /> Accent <input type="color" id="accent" value="#2a6fdb" /></label>
+          <label>
+            Shape
+            <select id="shape">
+              <option>circle</option>
+              <option>square</option>
+              <option>diamond</option>
+              <option>ring</option>
+            </select>
+          </label>
+          <label>Speed <input type="range" id="speed" min="0.25" max="3" step="0.05" value="1" /></label>
+          <label>Glow <input type="range" id="glow" min="0" max="1.5" step="0.05" value="0" /></label>
+          <label>Dim <input type="range" id="dim" min="0" max="0.5" step="0.01" value="0.14" /></label>
+          <label>Dot <input type="range" id="dot" min="0.3" max="1" step="0.02" value="0.72" /></label>
+        </fieldset>
+      </div>
+
+      <section class="list" id="list"></section>
+    </main>
+
+    <footer>Dotmatix <span id="version"></span> · MIT License</footer>
+
+    <script src="dotmatix.js"></script>
+    <script>
+      const list = document.getElementById("list");
+      const controls = ["color", "accent", "use-accent", "shape", "speed", "glow", "dim", "dot"].reduce((acc, id) => {
+        acc[id] = document.getElementById(id);
+        return acc;
+      }, {});
+      const loaders = [];
+
+      function currentOptions() {
+        return {
+          color: controls.color.value,
+          accent: controls["use-accent"].checked ? controls.accent.value : null,
+          shape: controls.shape.value,
+          speed: +controls.speed.value,
+          glow: +controls.glow.value,
+          dim: +controls.dim.value,
+          dot: +controls.dot.value,
+        };
+      }
+
+      function snippet(name, o) {
+        const attrs = [`name="${name}"`, 'size="48"', `color="${o.color}"`];
+        if (o.accent) attrs.push(`accent="${o.accent}"`);
+        if (o.shape !== "circle") attrs.push(`shape="${o.shape}"`);
+        if (o.speed !== 1) attrs.push(`speed="${o.speed}"`);
+        if (o.glow) attrs.push(`glow="${o.glow}"`);
+        if (o.dim !== 0.14) attrs.push(`dim="${o.dim}"`);
+        if (o.dot !== 0.72) attrs.push(`dot="${o.dot}"`);
+        return `<dotmatix-loader ${attrs.join(" ")}></dotmatix-loader>`;
+      }
+
+      let group = "";
+      for (const item of Dotmatix.list()) {
+        if (item.group && item.group !== group) {
+          group = item.group;
+          const heading = document.createElement("h3");
+          heading.className = "group";
+          heading.textContent = item.group;
+          list.appendChild(heading);
+        }
+        const card = document.createElement("article");
+        card.className = "item";
+        card.innerHTML = `
+          <div class="stage"></div>
+          <div class="info">
+            <h2>${item.title} <small>${item.grid}</small></h2>
+            <p>${item.note}</p>
+            <button class="copy" type="button">copy &lt;dotmatix-loader name="${item.name}"&gt;</button>
+          </div>`;
+        list.appendChild(card);
+
+        const loader = Dotmatix.mount(card.querySelector(".stage"), item.name, Object.assign({ size: 72, label: item.title }, currentOptions()));
+        loaders.push(loader);
+
+        const button = card.querySelector(".copy");
+        button.addEventListener("click", async () => {
+          const label = button.innerHTML;
+          try {
+            await navigator.clipboard.writeText(snippet(item.name, currentOptions()));
+            button.textContent = "copied";
+          } catch (err) {
+            button.textContent = "copy failed";
+          }
+          setTimeout(() => (button.innerHTML = label), 1200);
+        });
+      }
+
+      document.getElementById("controls").addEventListener("input", () => {
+        const o = currentOptions();
+        loaders.forEach((l) => l.set(o));
+      });
+
+      document.getElementById("version").textContent = "v" + Dotmatix.version;
+    </script>
+  </body>
+</html>
